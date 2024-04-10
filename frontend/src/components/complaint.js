@@ -1,8 +1,10 @@
 import React from "react";
-import './External.css'
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import './css/complaint.css'
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Complaint(){
@@ -24,8 +26,10 @@ export default function Complaint(){
                 setAddress('')
                 setReview('')
                 setImages([])
+                toast.success('Complaint Submitted Successfully')
                 
             })
+            
             .catch(err => {
                 console.log(err);
                 // Handle errors, such as displaying an error message to the user
@@ -34,7 +38,6 @@ export default function Complaint(){
         
     };
     
-       
 
 
     // Handler for file input
@@ -86,11 +89,4 @@ export default function Complaint(){
 
     
 </form>
-
-
-    
-        
-    
-
-    );
-}
+);}

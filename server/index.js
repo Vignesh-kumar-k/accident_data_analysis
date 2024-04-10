@@ -55,6 +55,13 @@ app.post('/submitcomplaint', (req, res) => {
     }
 });
 
+app.get('/complaints', (req, res) => {
+    complaintmodel.find({})
+        .then(complaints => {
+            res.json(complaints);
+        })
+        .catch(err => res.json(err));
+});
 
 
 
