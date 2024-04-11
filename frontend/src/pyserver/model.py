@@ -1,8 +1,39 @@
 import numpy as np
 from flask import Flask, request, jsonify
 import pickle   
+import pandas as pd
+from collections import defaultdict
 
 app = Flask(__name__)
+data = pd.read_csv('dataset.csv')
+from collections import defaultdict
+unitname_counts = defaultdict(list)
+for unitname in data['UNITNAME']:
+    unitname_counts[unitname].append(1)
+unitname_counts = {key: sum(value) for key, value in unitname_counts.items()}
+
+top = []
+for i in range(5):
+    values = unitname_counts.values()
+    a = max(values)
+    for key, val in unitname_counts.items():
+            if val == a:
+                top.append(key)
+                break
+    unitname_counts.pop(key)
+
+print(top)
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+top_cities = []
+for i in top:
+    top_cities.append(i)
+
+@app.route('/top-unit-names')
+def top_unit_names():
+    return jsonify({'top_unit_names': top_cities})
 
 # Load models
 models = {}
@@ -41,7 +72,7 @@ def predict_road_type():
         if predicted_value in road_types:
             predicted = road_types[predicted_value]
             value=predicted
-        return jsonify(prediction_text=f"The predicted road type: {value}")
+        return jsonify(prediction_text = value)
     except Exception as e:
         return jsonify(error=str(e)), 400
 
@@ -75,7 +106,7 @@ def predict_road_surface():
             value=predicted
             if value in improvement_predictions:
                 improve = improvement_predictions[value]
-            return jsonify(prediction_text1=f"The predicted road surface: {value}"+f" Improvement To Be Done: {improve}")
+            return jsonify(prediction_text1= value,prediction_text11= improve)
     except Exception as e:
         return jsonify(error=str(e)), 400
 
@@ -115,7 +146,7 @@ def predict_weather():
             value=predicted
             if value in improvement_predictions:
                 improve = improvement_predictions[value]
-        return jsonify(prediction_text2=f"The predicted weather: {value}"+f"Improvement To Be Done: {improve}")
+        return jsonify(prediction_text2 = value,prediction_text21 = improve)
     except Exception as e:
         return jsonify(error=str(e)), 400
     
@@ -145,7 +176,7 @@ def predict_light_conditions():
             value = condition[predict]
             if predict in improvement_predictions:
                 improve = improvement_predictions[predict]
-            return jsonify(prediction_text3=f"The predicted Light Condition: {value}"+f" Improvement To Be Done: {improve}")
+            return jsonify(prediction_text3=value, prediction_text31= improve)
     except Exception as e:
         return jsonify(error=str(e)), 400
 @app.route("/predict_pedestrian", methods=["POST"])
@@ -172,7 +203,7 @@ def predict_pedestrian():
         }
         if code in improvement_predictions:
             improve = improvement_predictions[code]
-        return jsonify(prediction_text4=f"The predicted pedestrian: {value}"+f" Improvement To Be Done: {improve}")
+        return jsonify(prediction_text4=value , prediction_text41=improve)
     except Exception as e:
         return jsonify(error=str(e)), 400
     
@@ -200,7 +231,7 @@ def predict_severity():
             value = severity[predict]
             if value in improvement_predictions:
                 improve = improvement_predictions[value]
-            return jsonify(prediction_text5=f"The predicted severity: {value}"+f" Improvement To Be Done: {improve}")
+            return jsonify(prediction_text5 = value, prediction_text51 = improve)
     except Exception as e:
         return jsonify(error=str(e)), 400
 

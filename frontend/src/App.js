@@ -7,6 +7,7 @@ import Home from './components/Home';
 import ShowComplaints from './components/ShowComplaint';
 import PyHome from './pyserver/templates/PyHome';
 import {ToastContainer} from 'react-toastify'
+import Map from "./components/Map";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/'element={<Home/>}/>
+          <Route path='/map'element={<Map/>}/>
           <Route path='/show' element={<ShowComplaints/>}/>
           <Route path='/register' element={<Signup/>}/>
           <Route path='/login' element={<Login/>}/>
